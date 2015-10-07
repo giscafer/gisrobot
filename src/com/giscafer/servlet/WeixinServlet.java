@@ -104,10 +104,23 @@ public class WeixinServlet extends HttpServlet {
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
 					// TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息
 				}
-				// 自定义菜单点击事件
+				// 自定义菜单CLICK事件
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
-					// TODO 自定义菜单权没有开放，暂不处理该类消息
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
 				}
+				// 自定义菜单VIEW事件
+				else if (eventType.equals(MessageUtil.EVENT_TYPE_VIEW)) {
+					String url=map.get("EventKey");
+					message=MessageUtil.initText(toUserName, fromUserName, url);
+				}
+				// 地理位置定位（有问题）
+				/*else if (eventType.equals(MessageUtil.EVENT_TYPE_LOCATION)) {
+					String Label=map.get("Label");
+					String Location_X=map.get("Location_X");
+					String Location_Y=map.get("Location_Y");
+					String locationInfo="您所在地理位置为："+Label+"，地理坐标经度为："+Location_X+"，纬度为："+Location_Y;
+					message=MessageUtil.initText(toUserName, fromUserName, locationInfo);
+				}*/
 			}
 			System.out.println(message);
 			out.print(message);

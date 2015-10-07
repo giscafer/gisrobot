@@ -35,7 +35,7 @@ public class MessageUtil {
 	public static final String MESSAGE_TYPE_MUSIC="music";
 	public static final String MESSAGE_TYPE_VIDEO="video";
 	public static final String MESSAGE_TYPE_LINK="link";
-	public static final String MESSAGE_TYPE_LOCATION="location";
+//	public static final String MESSAGE_TYPE_LOCATION="location";
 	public static final String MESSAGE_TYPE_EVENT="event";
 	//关注
 	public static final String EVENT_TYPE_SUBSCRIBE="subscribe";
@@ -43,6 +43,8 @@ public class MessageUtil {
 	//点击
 	public static final String EVENT_TYPE_CLICK="CLICK";
 	public static final String EVENT_TYPE_VIEW="VIEW";
+	//地理位置选择
+	public static final String EVENT_TYPE_LOCATION="location_select";
 	/**
 	 * xml转为map集合
 	 * @param request

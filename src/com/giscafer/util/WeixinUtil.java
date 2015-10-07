@@ -25,19 +25,33 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.giscafer.menu.Button;
+import com.giscafer.menu.ClickButton;
+import com.giscafer.menu.Menu;
+import com.giscafer.menu.ViewButton;
 import com.giscafer.po.AccessToken;
-
+/**
+ * 公众号通用接口工具类
+ * @author giscafer
+ *	@date 2015-10-08
+ */
 public class WeixinUtil {
 	// 第三方用户唯一凭证
 	public static String APPID="wx27fe66a6820ba9ae";
 	// 第三方用户唯一凭证密钥
 	public static String APPSECRET="973b8f9a2d1d7491a6bd7235e5d9bd31";
-	
+	//获取ACCESS_TOKEN
 	private static final String ACCESS_TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-	
+	//附件上传
 	private static final String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
+	//菜单创建
+	private static final String CREATE_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+	//菜单查询
+	public static final String QUERY_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
+	//菜单删除
+	private static final String DELETE_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
 	/**
-	 * get请求
+	 * get请求接口
 	 * @param url
 	 * @return
 	 */
@@ -63,7 +77,7 @@ public class WeixinUtil {
 		return jsonObject;
 	}
 	/**
-	 * post请求
+	 * post请求接口
 	 * @param url
 	 * @param outStr
 	 * @return
@@ -195,5 +209,93 @@ public class WeixinUtil {
 		}
 		String mediaId = jsonObj.getString(typeName);
 		return mediaId;
+	}
+	/**
+	 * 初始化菜单
+	 * @return
+	 */
+	public static Menu initMenu(){
+		Menu menu=new Menu();
+		/**生活助手菜单*/
+		Button lifeAssisBtn=new Button();
+		lifeAssisBtn.setType("click");
+		lifeAssisBtn.setName("生活助手");
+		//天气预报子菜单
+		ClickButton weatherBtn=new ClickButton();
+		weatherBtn.setName("天气预报");
+		weatherBtn.setType("click");
+		weatherBtn.setKey("weather");
+		
+		lifeAssisBtn.setSub_button(new Button[]{weatherBtn});
+		/**休闲驿站菜单*/
+		Button leisureInnBtn=new Button();
+		leisureInnBtn.setName("休闲驿站");
+		leisureInnBtn.setType("click");
+		// 天气预报子菜单
+		ClickButton musicBtn = new ClickButton();
+		musicBtn.setName("歌曲点播");
+		musicBtn.setType("click");
+		musicBtn.setKey("song_on_demand");
+		leisureInnBtn.setSub_button(new Button[]{musicBtn});
+		//百度搜索
+		ViewButton searchBtn = new ViewButton();
+		searchBtn.setName("搜索");
+		searchBtn.setType("view");
+		searchBtn.setUrl("http://www.baidu.com/");
+		//扫描二维码
+		ClickButton scancodeBtn=new ClickButton();
+		scancodeBtn.setName("扫一扫");
+		scancodeBtn.setType("scancode_push");
+		scancodeBtn.setKey("scancode_push");
+		//地理位置
+		ClickButton locationBtn=new ClickButton();
+		locationBtn.setName("地理位置");
+		locationBtn.setType("location_select");
+		locationBtn.setKey("location_select");
+		
+		
+		/**常用工具菜单*/
+		Button commonToolsBtn=new Button();
+		commonToolsBtn.setType("click");
+		commonToolsBtn.setName("常用工具");
+		commonToolsBtn.setSub_button(new Button[]{scancodeBtn,locationBtn,searchBtn});
+		
+		menu.setButton(new Button[]{lifeAssisBtn,leisureInnBtn,commonToolsBtn});
+		return menu;
+	}
+	/**
+	 * 创建菜单
+	 * @param token
+	 * @param menu
+	 * @return
+	 */
+	public static int createMenu(String token,String menu){
+		int result=0;
+		String url=CREATE_MENU_URL.replace("ACCESS_TOKEN", token);
+		JSONObject jsonObject=doPostStr(url,menu);
+		if(jsonObject!=null){
+			result=jsonObject.getInt("errcode");
+		}
+		return result;
+	}
+	/**
+	 * 删除菜单
+	 * @param token
+	 * @param menu
+	 * @return
+	 */
+	public static int deleteMenu(String token){
+		int result=0;
+		String url=DELETE_MENU_URL.replace("ACCESS_TOKEN", token);
+		JSONObject jsonObject=doGetStr(url);
+		if(jsonObject!=null){
+			result=jsonObject.getInt("errcode");
+		}
+		return result;
+	}
+	public static JSONObject queryMenu(String token){
+		String url=QUERY_MENU_URL.replace("ACCESS_TOKEN", token);
+		JSONObject jsonObject=doGetStr(url);
+		return jsonObject;
 	}
 }
