@@ -3,6 +3,7 @@
     <wb-module deploy-name="gisrobot">
         <wb-resource deploy-path="/" source-path="/WebRoot"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/config"/>
         <property name="java-output-path" value="/gisrobot/WebRoot/WEB-INF/classes"/>
         <property name="context-root" value="/gisrobot"/>
     </wb-module>
