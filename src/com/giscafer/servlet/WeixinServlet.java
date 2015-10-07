@@ -37,25 +37,35 @@ public class WeixinServlet extends HttpServlet{
 			throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setCharacterEncoding("UTF-8");
-//		resp.setContentType("text/html; charset=utf-8");
 		PrintWriter out=resp.getWriter();
 		try {
 			Map<String,String> map=MessageUtil.xmlToMap(req);
-			String FromUserName=map.get("FromUserName");
-			String ToUserName=map.get("ToUserName");
+			String fromUserName=map.get("FromUserName");
+			String toUserName=map.get("ToUserName");
 			String MsgType=map.get("MsgType");
-			String Content=map.get("Content");
+			String content=map.get("Content");
 			String message=null;
-			if("text".equals(MsgType)){
-				TextMessage text=new TextMessage();
-				text.setContent("您发送的消息是："+Content);
-				text.setFromUserName(ToUserName);
-				text.setToUserName(FromUserName);
-				text.setCreateTime(String.valueOf(new Date().getTime()));
-				text.setMsgType("text");
-				message=MessageUtil.textMessageToXml(text);
-				System.out.println(message);
+			//文本消息类型
+			if(MessageUtil.MESSAGE_TEXT.equals(MsgType)){
+				//根据消息类型进行返回不同内容
+				if("1".equals(content)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.weatherMenu());
+				}else if("2".equals(content)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.busQueryMenu());
+				}else if("3".equals(content)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.peripheralSearchMenu());
+				}else if("?".equals(content) || "？".equals(content)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
+				}
+				
+			}//事件
+			else if(MessageUtil.MESSAGE_EVENT.equals(MsgType)){
+				String eventType=map.get("Event");
+				if(MessageUtil.MESSAGE_SUBSCRIBE.equals(eventType)){
+					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
+				}
 			}
+			System.out.println(message);
 			out.print(message);
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
