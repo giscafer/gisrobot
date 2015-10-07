@@ -20,17 +20,19 @@ import com.thoughtworks.xstream.XStream;
 public class MessageUtil {
 	
 	//消息类型
-	public static final String MESSAGE_TEXT="text";
-	public static final String MESSAGE_IMAGE="image";
-	public static final String MESSAGE_VOICE="voice";
-	public static final String MESSAGE_VIDEO="video";
-	public static final String MESSAGE_LINK="link";
-	public static final String MESSAGE_LOCATION="location";
-	public static final String MESSAGE_EVENT="event";
-	public static final String MESSAGE_SUBSCRIBE="subscribe";
-	public static final String MESSAGE_UNSUBSCRIBE="unsubscribe";
-	public static final String MESSAGE_CLICK="CLICK";
-	public static final String MESSAGE_VIEW="VIEW";
+	public static final String MESSAGE_TYPE_TEXT="text";
+	public static final String MESSAGE_TYPE_IMAGE="image";
+	public static final String MESSAGE_TYPE_VOICE="voice";
+	public static final String MESSAGE_TYPE_VIDEO="video";
+	public static final String MESSAGE_TYPE_LINK="link";
+	public static final String MESSAGE_TYPE_LOCATION="location";
+	public static final String MESSAGE_TYPE_EVENT="event";
+	//关注
+	public static final String EVENT_TYPE_SUBSCRIBE="subscribe";
+	public static final String EVENT_TYPE_UNSUBSCRIBE="unsubscribe";
+	//点击
+	public static final String EVENT_TYPE_CLICK="CLICK";
+	public static final String EVENT_TYPE_VIEW="VIEW";
 	/**
 	 * xml转为map集合
 	 * @param request
@@ -72,7 +74,7 @@ public class MessageUtil {
 		text.setFromUserName(toUserName);
 		text.setToUserName(fromUserName);
 		text.setCreateTime(String.valueOf(new Date().getTime()));
-		text.setMsgType(MessageUtil.MESSAGE_TEXT);
+		text.setMsgType(MessageUtil.MESSAGE_TYPE_TEXT);
 		return MessageUtil.textMessageToXml(text);
 	}
 	/**
