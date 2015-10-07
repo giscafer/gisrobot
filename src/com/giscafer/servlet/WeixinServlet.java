@@ -2,7 +2,6 @@ package com.giscafer.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.dom4j.DocumentException;
 
-import com.giscafer.po.TextMessage;
 import com.giscafer.util.CheckUtil;
 import com.giscafer.util.MessageUtil;
 /**
@@ -79,6 +77,10 @@ public class WeixinServlet extends HttpServlet {
 				// 图片消息
 				else if ("4".equals(content)) {
 					message = MessageUtil.initImageMessage(toUserName, fromUserName);
+				}
+				// 音乐消息
+				else if ("5".equals(content)) {
+					message = MessageUtil.initMusicMessage(toUserName, fromUserName);
 				}
 				// 问号显示主菜单
 				else if ("?".equals(content) || "？".equals(content)) {

@@ -18,8 +18,11 @@ import org.dom4j.io.SAXReader;
 import com.giscafer.po.Article;
 import com.giscafer.po.Image;
 import com.giscafer.po.ImageMessage;
+import com.giscafer.po.Music;
+import com.giscafer.po.MusicMessage;
 import com.giscafer.po.NewsMessage;
 import com.giscafer.po.TextMessage;
+import com.giscafer.test.WeixinTest;
 import com.thoughtworks.xstream.XStream;
 
 public class MessageUtil {
@@ -29,6 +32,7 @@ public class MessageUtil {
 	public static final String MESSAGE_TYPE_NEWS="news";
 	public static final String MESSAGE_TYPE_IMAGE="image";
 	public static final String MESSAGE_TYPE_VOICE="voice";
+	public static final String MESSAGE_TYPE_MUSIC="music";
 	public static final String MESSAGE_TYPE_VIDEO="video";
 	public static final String MESSAGE_TYPE_LINK="link";
 	public static final String MESSAGE_TYPE_LOCATION="location";
@@ -91,9 +95,10 @@ public class MessageUtil {
 		b.append("欢迎关注gisrobot,请按照菜单提示进行操作：\n\n");
 		b.append("1、天气预报\n");
 		b.append("2、公交查询\n");
-		b.append("3、周边搜索\n\n");
-		b.append("4、图片消息\n\n");
-		b.append("非以上其他，图文消息\n\n");
+		b.append("3、周边搜索\n");
+		b.append("4、图片消息\n");
+		b.append("5、音乐消息\n");
+		b.append("其他、图文消息\n\n");
 		b.append("回复“？”显示此帮助菜单！");
 		return b.toString();
 	}
@@ -196,6 +201,7 @@ public class MessageUtil {
 		String message=null;
 		Image image=new Image();
 		//通过上传图片返回的mediaId
+		//最大1M
 		/*String filePath="G:/Java/qrcode.png";
 		try {
 			String mediaId=WeixinUtil.upload(filePath, token.getToken(), "image");
@@ -212,6 +218,50 @@ public class MessageUtil {
 		imageMessage.setCreateTime(new Date().getTime());
 		imageMessage.setImage(image);
 		message=imageMessageToXml(imageMessage);
+		return message;
+	}
+	/**
+	 * 音乐对象转为xml
+	 * @param newsMessage
+	 * @return
+	 */
+	public static String musicMessageToXml(MusicMessage musicMessage){
+		XStream xstream=new XStream();
+		xstream.alias("xml", musicMessage.getClass());
+		return xstream.toXML(musicMessage);
+	}
+	/**
+	 * 音乐信息组装
+	 * @param toUserName
+	 * @param fromUserName
+	 * @return
+	 */
+	public static String initMusicMessage(String toUserName,String fromUserName){
+		String message=null;
+		Music music=new Music();
+		//通过上传图片返回的mediaId
+		//最大60kb
+		/*String filePath="G:/Java/50.6kb.png";
+		try {
+			String mediaId=WeixinUtil.upload(filePath, token.getToken(), "thumb");
+			System.out.println(mediaId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+//		String rootPath=MessageUtil.class.getResource("/").toString().replace("WEB-INF/classes/","");
+		music.setThumbMediaId("c5Yg1lbGH0cYOvvjNHgOHVaZiBffH1QRZln58VJJqETGhilFGf2jR7cA5BWPoV2w");
+		music.setTitle("see you again");
+		music.setDescription("速度与激情7片尾曲");
+		music.setMusicUrl("http://giscafer.tunnel.mobi/gisrobot/resource/See You Again.mp3");
+		music.setHQMusicUrl("http://giscafer.tunnel.mobi/gisrobot/resource/See You Again.mp3");
+		MusicMessage musicMessage=new MusicMessage();
+		musicMessage.setFromUserName(toUserName);
+		musicMessage.setToUserName(fromUserName);
+		musicMessage.setMsgType(MESSAGE_TYPE_MUSIC);
+		musicMessage.setCreateTime(new Date().getTime());
+		musicMessage.setMusic(music);
+		message=musicMessageToXml(musicMessage);
 		return message;
 	}
 }

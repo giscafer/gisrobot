@@ -16,10 +16,10 @@ public class WeixinTest {
 		AccessToken token=WeixinUtil.getAccessToken();
 		System.out.println("票据："+token.getToken());
 		System.out.println("有效时间："+token.getExpiresIn());
-		
-		String filePath="G:/Java/qrcode.png";
+		System.out.println(WeixinTest.class.getResource("/").toString().replace("WEB-INF/classes/",""));
+		String filePath="G:/Java/50.6kb.png";
 		try {
-			String mediaId=WeixinUtil.upload(filePath, token.getToken(), "image");
+			String mediaId=WeixinUtil.upload(filePath, token.getToken(), "thumb");
 			System.out.println(mediaId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
