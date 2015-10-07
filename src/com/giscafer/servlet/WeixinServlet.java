@@ -15,7 +15,11 @@ import org.dom4j.DocumentException;
 import com.giscafer.po.TextMessage;
 import com.giscafer.util.CheckUtil;
 import com.giscafer.util.MessageUtil;
-
+/**
+ * 所有菜单请求处理servlet
+ * @author giscafer
+ *
+ */
 public class WeixinServlet extends HttpServlet {
 
 	/**
@@ -72,11 +76,17 @@ public class WeixinServlet extends HttpServlet {
 					message = MessageUtil.initText(toUserName, fromUserName,
 							MessageUtil.peripheralSearchMenu());
 				}
+				// 图片消息
+				else if ("4".equals(content)) {
+					message = MessageUtil.initImageMessage(toUserName, fromUserName);
+				}
 				// 问号显示主菜单
 				else if ("?".equals(content) || "？".equals(content)) {
 					message = MessageUtil.initText(toUserName, fromUserName,
 							MessageUtil.menuText());
-				}else{
+				}
+				//其他回复时，返回图文消息
+				else{
 					message = MessageUtil.initNewsMessage(toUserName, fromUserName);
 				}
 

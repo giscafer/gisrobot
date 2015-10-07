@@ -16,6 +16,8 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import com.giscafer.po.Article;
+import com.giscafer.po.Image;
+import com.giscafer.po.ImageMessage;
 import com.giscafer.po.NewsMessage;
 import com.giscafer.po.TextMessage;
 import com.thoughtworks.xstream.XStream;
@@ -90,6 +92,8 @@ public class MessageUtil {
 		b.append("1、天气预报\n");
 		b.append("2、公交查询\n");
 		b.append("3、周边搜索\n\n");
+		b.append("4、图片消息\n\n");
+		b.append("非以上其他，图文消息\n\n");
 		b.append("回复“？”显示此帮助菜单！");
 		return b.toString();
 	}
@@ -170,6 +174,44 @@ public class MessageUtil {
 		newsMessage.setArticles(articleList);
 		newsMessage.setArticleCount(articleList.size());
 		message=newsMessageToXml(newsMessage);
+		return message;
+	}
+	/**
+	 * 图片信息对象转为xml
+	 * @param newsMessage
+	 * @return
+	 */
+	public static String imageMessageToXml(ImageMessage imageMessage){
+		XStream xstream=new XStream();
+		xstream.alias("xml", imageMessage.getClass());
+		return xstream.toXML(imageMessage);
+	}
+	/**
+	 * 图片信息组装
+	 * @param toUserName
+	 * @param fromUserName
+	 * @return
+	 */
+	public static String initImageMessage(String toUserName,String fromUserName){
+		String message=null;
+		Image image=new Image();
+		//通过上传图片返回的mediaId
+		/*String filePath="G:/Java/qrcode.png";
+		try {
+			String mediaId=WeixinUtil.upload(filePath, token.getToken(), "image");
+			System.out.println(mediaId);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		image.setMediaId("78tJeKk89Vvj3djIx5HVzSlthQXvV7axG9xNk9xlfiW4DNr5aidc7HINmV6X2UEp");
+		ImageMessage imageMessage=new ImageMessage();
+		imageMessage.setFromUserName(toUserName);
+		imageMessage.setToUserName(fromUserName);
+		imageMessage.setMsgType(MESSAGE_TYPE_IMAGE);
+		imageMessage.setCreateTime(new Date().getTime());
+		imageMessage.setImage(image);
+		message=imageMessageToXml(imageMessage);
 		return message;
 	}
 }
