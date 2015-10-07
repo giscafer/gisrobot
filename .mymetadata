@@ -3,7 +3,7 @@
   type="WEB"
   name="gisrobot"
   id="myeclipse.1444109618167"
-  context-root="/WeixinProject"
+  context-root="/gisrobot"
   j2ee-spec="6.0"
   archive="gisrobot.war">
   <attributes>
