@@ -266,4 +266,21 @@ public class MessageUtil {
 		message=musicMessageToXml(musicMessage);
 		return message;
 	}
+	/**
+	 * 百度翻译使用介绍
+	 * @return
+	 */
+	public static String introBaiduTrans(){
+		StringBuffer sb=new StringBuffer();
+		sb.append("【翻译使用指南】\n\n");
+		sb.append("1、词组示例:\n");
+		sb.append("翻译足球\n");
+		sb.append("翻译football\n");
+		sb.append("2、句子示例:\n");
+		sb.append("翻译我有一个梦想\n");
+		sb.append("翻译I have a dream\n\n");
+		sb.append("回复“?”显示主菜单！");
+		return sb.toString();
+		
+	}
 }

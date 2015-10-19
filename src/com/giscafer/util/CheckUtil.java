@@ -2,7 +2,10 @@ package com.giscafer.util;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
-
+/**
+ * 微信的signature对请求进行校验类
+ * @author giscafer
+ */
 public class CheckUtil {
 	public static final String token="giscafer";
 	public static boolean checkSignature(String signature,String timestamp,String nonce){

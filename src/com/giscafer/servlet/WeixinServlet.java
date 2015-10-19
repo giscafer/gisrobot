@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.dom4j.DocumentException;
 
+import com.giscafer.components.Components;
 import com.giscafer.util.CheckUtil;
 import com.giscafer.util.MessageUtil;
 /**
@@ -86,6 +87,15 @@ public class WeixinServlet extends HttpServlet {
 				else if ("?".equals(content) || "？".equals(content)) {
 					message = MessageUtil.initText(toUserName, fromUserName,
 							MessageUtil.menuText());
+				}
+				// 问号显示主菜单
+				else if (content.startsWith("翻译")) {
+					String word=content.replaceAll("^翻译","").trim();
+					if("".equals(word)){
+						message = MessageUtil.initText(toUserName, fromUserName,MessageUtil.introBaiduTrans());
+					}else{
+						message = MessageUtil.initText(toUserName, fromUserName,Components.dictTranslate(word));
+					}
 				}
 				//其他回复时，返回图文消息
 				else{

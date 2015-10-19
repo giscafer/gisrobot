@@ -242,6 +242,11 @@ public class WeixinUtil {
 		searchBtn.setName("搜索");
 		searchBtn.setType("view");
 		searchBtn.setUrl("http://www.baidu.com/");
+		//百度翻译
+		ClickButton transBtn = new ClickButton();
+		transBtn.setName("词典翻译");
+		transBtn.setType("click");
+		transBtn.setKey("baidu_trans");
 		//扫描二维码
 		ClickButton scancodeBtn=new ClickButton();
 		scancodeBtn.setName("扫一扫");
@@ -258,7 +263,7 @@ public class WeixinUtil {
 		Button commonToolsBtn=new Button();
 		commonToolsBtn.setType("click");
 		commonToolsBtn.setName("常用工具");
-		commonToolsBtn.setSub_button(new Button[]{scancodeBtn,locationBtn,searchBtn});
+		commonToolsBtn.setSub_button(new Button[]{transBtn,scancodeBtn,locationBtn,searchBtn});
 		
 		menu.setButton(new Button[]{lifeAssisBtn,leisureInnBtn,commonToolsBtn});
 		return menu;
@@ -298,4 +303,5 @@ public class WeixinUtil {
 		JSONObject jsonObject=doGetStr(url);
 		return jsonObject;
 	}
+	
 }
