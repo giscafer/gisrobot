@@ -29,7 +29,7 @@ public class Components {
 	 */
 	public static String dictTranslate(String source) throws UnsupportedEncodingException {
 		int resCnt=0;
-		StringBuffer dst = new StringBuffer("["+source+"]翻译结果：\n");
+		StringBuffer dst = new StringBuffer("原文：\n"+source+"\n译文：\n");
 		String url = "http://openapi.baidu.com/public/2.0/translate/dict/simple?client_id=ARzKx2rdHirLoS9Q2T7yTiXZ&q=KEYWORD&from=auto&to=auto";
 		url = url.replace("KEYWORD", URLEncoder.encode(source, "UTF-8"));
 		JSONObject jsonObject = WeixinUtil.doGetStr(url);
@@ -54,8 +54,13 @@ public class Components {
 				String[] means=part.getMeans();
 				dst.append(pat);
 				for(String mean:means){
-					resCnt++;
-					dst.append(resCnt+"."+mean+"\n");
+					if(means.length>1){
+						resCnt++;
+						dst.append(resCnt+"."+mean+"\n");
+					}else{
+						dst.append(mean+"\n");
+					}
+					
 				}
 				
 			}
