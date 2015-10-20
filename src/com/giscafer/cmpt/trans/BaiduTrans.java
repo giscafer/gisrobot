@@ -1,4 +1,4 @@
-package com.giscafer.trans;
+package com.giscafer.cmpt.trans;
 /**
  * 百度翻译对象
  * @author giscafer

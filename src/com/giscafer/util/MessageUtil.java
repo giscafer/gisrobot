@@ -22,7 +22,6 @@ import com.giscafer.po.Music;
 import com.giscafer.po.MusicMessage;
 import com.giscafer.po.NewsMessage;
 import com.giscafer.po.TextMessage;
-import com.giscafer.test.WeixinTest;
 import com.thoughtworks.xstream.XStream;
 
 public class MessageUtil {
@@ -273,12 +272,30 @@ public class MessageUtil {
 	public static String introBaiduTrans(){
 		StringBuffer sb=new StringBuffer();
 		sb.append("【翻译使用指南】\n\n");
+		sb.append("回复：翻译+词组\n");
 		sb.append("1、词组示例:\n");
 		sb.append("翻译足球\n");
 		sb.append("翻译football\n");
 		sb.append("2、句子示例:\n");
 		sb.append("翻译我有一个梦想\n");
 		sb.append("翻译I have a dream\n\n");
+		sb.append("回复“?”显示主菜单！");
+		return sb.toString();
+		
+	}
+	/**
+	 * 天气查询介绍
+	 * 回复：天气+城市名称
+		例如：天气贵阳
+		或者：贵阳天气
+	 * @return
+	 */
+	public static String introSearchWeather(){
+		StringBuffer sb=new StringBuffer();
+		sb.append("【天气查询使用指南】\n\n");
+		sb.append("回复：天气+城市名称\n");
+		sb.append("例如：天气北海\n");
+		sb.append("或者：北海天气\n\n");
 		sb.append("回复“?”显示主菜单！");
 		return sb.toString();
 		

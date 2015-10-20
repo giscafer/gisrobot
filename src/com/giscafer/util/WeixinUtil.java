@@ -237,16 +237,19 @@ public class WeixinUtil {
 		musicBtn.setType("click");
 		musicBtn.setKey("song_on_demand");
 		leisureInnBtn.setSub_button(new Button[]{musicBtn});
-		//百度搜索
-		ViewButton searchBtn = new ViewButton();
-		searchBtn.setName("搜索");
-		searchBtn.setType("view");
-		searchBtn.setUrl("http://www.baidu.com/");
+		
 		//百度翻译
 		ClickButton transBtn = new ClickButton();
 		transBtn.setName("词典翻译");
 		transBtn.setType("click");
 		transBtn.setKey("baidu_trans");
+		
+		//百度搜索
+		ViewButton searchBtn = new ViewButton();
+		searchBtn.setName("搜索");
+		searchBtn.setType("view");
+		searchBtn.setUrl("http://www.baidu.com/");
+		
 		//扫描二维码
 		ClickButton scancodeBtn=new ClickButton();
 		scancodeBtn.setName("扫一扫");
@@ -257,7 +260,6 @@ public class WeixinUtil {
 		locationBtn.setName("地理位置");
 		locationBtn.setType("location_select");
 		locationBtn.setKey("location_select");
-		
 		
 		/**常用工具菜单*/
 		Button commonToolsBtn=new Button();

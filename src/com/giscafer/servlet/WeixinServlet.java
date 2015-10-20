@@ -48,15 +48,18 @@ public class WeixinServlet extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 		PrintWriter out = resp.getWriter();
 		try {
-			Map<String, String> map = MessageUtil.xmlToMap(req);
+			 // 默认返回的文本消息内容  
+            String respContent = "请求处理异常，请稍候尝试！"; 
+            
+			Map<String, String> requestMap = MessageUtil.xmlToMap(req);
 			// 发送方帐号（open_id）
-			String fromUserName = map.get("FromUserName");
+			String fromUserName = requestMap.get("FromUserName");
 			// 公众帐号
-			String toUserName = map.get("ToUserName");
+			String toUserName = requestMap.get("ToUserName");
 			// 消息类型
-			String MsgType = map.get("MsgType");
+			String MsgType = requestMap.get("MsgType");
 			// 消息内容
-			String content = map.get("Content");
+			String content = requestMap.get("Content");
 			String message = null;
 			// 文本消息类型的回复
 			if (MessageUtil.MESSAGE_TYPE_TEXT.equals(MsgType)) {
@@ -88,13 +91,25 @@ public class WeixinServlet extends HttpServlet {
 					message = MessageUtil.initText(toUserName, fromUserName,
 							MessageUtil.menuText());
 				}
-				// 问号显示主菜单
+				// 百度翻译
 				else if (content.startsWith("翻译")) {
 					String word=content.replaceAll("^翻译","").trim();
 					if("".equals(word)){
 						message = MessageUtil.initText(toUserName, fromUserName,MessageUtil.introBaiduTrans());
 					}else{
 						message = MessageUtil.initText(toUserName, fromUserName,Components.dictTranslate(word));
+					}
+				}
+				// 天气查询
+				else if (content.contains("天气")) {
+					String city=content.replaceAll("天气","").trim();
+					if(city.contains("市")){
+						city=city.replaceAll("市", "").trim();
+					}
+					if("".equals(city)){
+						message = MessageUtil.initText(toUserName, fromUserName,MessageUtil.introSearchWeather());
+					}else{
+						message = Components.searchWeather(toUserName, fromUserName, city);
 					}
 				}
 				//其他回复时，返回图文消息
@@ -105,7 +120,7 @@ public class WeixinServlet extends HttpServlet {
 			}// 事件推送 MsgType=event
 			else if (MessageUtil.MESSAGE_TYPE_EVENT.equals(MsgType)) {
 				// 事件类型
-				String eventType = map.get("Event");
+				String eventType = requestMap.get("Event");
 				// 订阅
 				if (MessageUtil.EVENT_TYPE_SUBSCRIBE.equals(eventType)) {
 					message = MessageUtil.initText(toUserName, fromUserName,
@@ -116,18 +131,44 @@ public class WeixinServlet extends HttpServlet {
 				}
 				// 自定义菜单CLICK事件
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
-					message=MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
+					// 事件KEY值，与创建自定义菜单时指定的KEY值对应  
+                    String eventKey = requestMap.get("EventKey");
+                    if (eventKey.equals("weather")) {  
+                        message=MessageUtil.initText(toUserName, fromUserName,MessageUtil.introSearchWeather());
+                    } else if (eventKey.equals("baidu_trans")) { 
+                    	message = MessageUtil.initText(toUserName, fromUserName,MessageUtil.introBaiduTrans());
+                    } else if (eventKey.equals("13")) {  
+                        respContent = "周边搜索开发中，敬请期待！";  
+                    } else if (eventKey.equals("14")) {  
+                        respContent = "历史上的今天开发中，敬请期待！";  
+                    } else if (eventKey.equals("song_on_demand")) {  
+                        respContent = "歌曲点播开发中，敬请期待！";  
+                        message=MessageUtil.initText(toUserName, fromUserName, respContent);
+                    } else if (eventKey.equals("22")) {  
+                        respContent = "经典游戏开发中，敬请期待！";  
+                    } else if (eventKey.equals("23")) {  
+                        respContent = "美女电台开发中，敬请期待！";  
+                    } else if (eventKey.equals("24")) {  
+                        respContent = "人脸识别开发中，敬请期待！";  
+                    } else if (eventKey.equals("25")) {  
+                        respContent = "聊天唠嗑开发中，敬请期待！";  
+                    } else if (eventKey.equals("31")) {  
+                        respContent = "Q友圈开发中，敬请期待！";  
+                    } else if (eventKey.equals("32")) {  
+                        respContent = "电影排行榜开发中，敬请期待！";  
+                    } else if (eventKey.equals("33")) {  
+                        respContent = "幽默笑话开发中，敬请期待！";  
+                    }  
 				}
 				// 自定义菜单VIEW事件
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_VIEW)) {
-					String url=map.get("EventKey");
-					message=MessageUtil.initText(toUserName, fromUserName, url);
+					
 				}
 				// 地理位置定位（有问题）
 				/*else if (eventType.equals(MessageUtil.EVENT_TYPE_LOCATION)) {
-					String Label=map.get("Label");
-					String Location_X=map.get("Location_X");
-					String Location_Y=map.get("Location_Y");
+					String Label=requestMap.get("Label");
+					String Location_X=requestMap.get("Location_X");
+					String Location_Y=requestMap.get("Location_Y");
 					String locationInfo="您所在地理位置为："+Label+"，地理坐标经度为："+Location_X+"，纬度为："+Location_Y;
 					message=MessageUtil.initText(toUserName, fromUserName, locationInfo);
 				}*/

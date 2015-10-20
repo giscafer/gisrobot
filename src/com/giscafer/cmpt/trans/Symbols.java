@@ -1,4 +1,4 @@
-package com.giscafer.trans;
+package com.giscafer.cmpt.trans;
 
 public class Symbols {
 
